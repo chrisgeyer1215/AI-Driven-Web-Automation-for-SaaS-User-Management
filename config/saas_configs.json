@@ -1,0 +1,72 @@
+{
+  "dropbox": {
+    "name": "Dropbox Business",
+    "base_url": "https://www.dropbox.com",
+    "login_url": "https://www.dropbox.com/login",
+    "users_page": "/team/admin/members",
+    "add_user_page": "/team/admin/members/invite",
+    "selectors": {
+      "login": {
+        "email_selector": "input[name='login_email']",
+        "pwd_field_selector": "input[name='login_password']",
+        "submit_selector": "button[type='submit']"
+      },
+      "users_table": ".member-row",
+      "pagination": ".pagination-next",
+      "add_user_form": {
+        "email": "input[name='email']",
+        "name": "input[name='given_name']",
+        "role": "select[name='role']"
+      }
+    },
+    "rate_limit_ms": 2000
+  },
+  "notion": {
+    "name": "Notion Workspace",
+    "base_url": "https://www.notion.so",
+    "login_url": "https://www.notion.so/login",
+    "users_page": "/settings/members",
+    "selectors": {
+      "login": {
+        "email_selector": "input[type='email']",
+        "pwd_field_selector": "input[type='password']",
+        "submit_selector": "button[type='submit']"
+      },
+      "users_table": "[data-testid='member-row']",
+      "add_user_button": "[data-testid='invite-button']"
+    },
+    "rate_limit_ms": 1500
+  },
+  "hubspot": {
+    "name": "HubSpot",
+    "base_url": "https://app.hubspot.com",
+    "login_url": "https://app.hubspot.com/login",
+    "users_page": "/settings/users",
+    "selectors": {
+      "login": {
+        "email_selector": "#username",
+        "pwd_field_selector": "#password",
+        "submit_selector": "#loginBtn"
+      },
+      "users_table": ".user-row",
+      "add_user_button": ".add-user-btn"
+    },
+    "rate_limit_ms": 3000
+  },
+  "trello": {
+    "name": "Trello",
+    "base_url": "https://trello.com",
+    "login_url": "https://trello.com/login",
+    "users_page": "/enterprise/members",
+    "selectors": {
+      "login": {
+        "email_selector": "#user",
+        "pwd_field_selector": "#password",
+        "submit_selector": "#login"
+      },
+      "users_table": ".member-item",
+      "add_user_button": ".add-member-btn"
+    },
+    "rate_limit_ms": 2500
+  }
+}

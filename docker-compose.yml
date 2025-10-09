@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  saas-automation:
+    build: .
+    container_name: saas-automation
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - HEADLESS_MODE=true
+      - BROWSER_TYPE=chromium
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+      - ./data:/app/data
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "print('healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - automation-network
+
+  # Optional: Redis for session storage and caching
+  redis:
+    image: redis:7-alpine
+    container_name: saas-automation-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - automation-network
+    restart: unless-stopped
+
+  # Optional: PostgreSQL for audit logging
+  postgres:
+    image: postgres:15-alpine
+    container_name: saas-automation-db
+    environment:
+      - POSTGRES_DB=saas_automation
+      - POSTGRES_USER=automation
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD environment variable is required}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - automation-network
+    restart: unless-stopped
+
+networks:
+  automation-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  postgres-data:
